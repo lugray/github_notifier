@@ -6,6 +6,8 @@ require 'net/http'
 require 'json'
 require 'open3'
 
+TMP_DATA_FILE = '/tmp/octobox-bitbar-ids.json'.freeze
+
 # Install terminal notifier gem if you want it.
 begin
   require 'terminal-notifier'
@@ -37,19 +39,35 @@ data = Net::HTTP.start('octobox.shopify.io', 443, use_ssl: true) do |http|
   JSON.parse(resp.body)
 end
 
-total = data.fetch('notifications').count { |notification| notification.fetch('unread') }
+current_ids = data.fetch('notifications')
+  .select { |notification| notification.fetch('unread') }
+  .map { |notification| notification.fetch('github_id') }
+  .sort
 
-if total > 0
+notify_ids = nil
+begin
+  previous_ids = JSON.parse(File.read(TMP_DATA_FILE))
+  notify_ids = current_ids - previous_ids
+rescue Exception => _
+  # ignore
+end
+
+File.write(TMP_DATA_FILE, JSON.generate(current_ids))
+
+if current_ids.empty?
+  TerminalNotifier.remove(:octobox)
+elsif notify_ids.nil? || !notify_ids.empty?
+  text = pluralize(current_ids.size, "unread item")
+  text += ", " + pluralize(notify_ids.size, "new item") unless notify_ids.nil?
+
   TerminalNotifier.notify(
-    pluralize(total, "new item"),
+    text,
     title: 'Ocotobox',
     subtitle: 'Pending review',
     group: :octobox,
     execute: 'open https://octobox.shopify.io/',
     appIcon: "data:image/png;base64,#{IMAGE}",
   )
-else
-  TerminalNotifier.remove(:octobox)
 end
 
-puts "#{total}| image=#{IMAGE} href=https://octobox.shopify.io/"
+puts "#{current_ids.size}| image=#{IMAGE} href=https://octobox.shopify.io/"
