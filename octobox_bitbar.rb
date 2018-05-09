@@ -58,7 +58,6 @@ if current_ids.empty?
   TerminalNotifier.remove(:octobox)
 elsif notify_ids.nil? || !notify_ids.empty?
   text = pluralize(current_ids.size, "unread item")
-  text += ", " + pluralize(notify_ids.size, "new item") unless notify_ids.nil?
 
   TerminalNotifier.notify(
     text,
