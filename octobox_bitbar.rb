@@ -84,6 +84,7 @@ notifications = Net::HTTP.start('octobox.shopify.io', 443, use_ssl: true) do |ht
 end
 
 unread_notifications = notifications.select(&:unread?)
+read_notifications = notifications.select(&:read?)
 
 current_ids = unread_notifications.map(&:id).sort
 
@@ -120,7 +121,7 @@ elsif notification_changed
 end
 
 puts <<~EOF
-#{current_ids.size}| image=#{IMAGE}
+#{unread_notifications.size}| image=#{IMAGE}
 ---
 View all in Octobox| href=https://octobox.shopify.io/
 ---
@@ -128,8 +129,10 @@ EOF
 unread_notifications.each do |notification|
   puts notification.menu_string
 end
-puts "---"
-puts "Read notifications"
-notifications.select(&:read?).each do |notification|
-  puts "--#{notification.menu_string}"
+if read_notifications.any?
+  puts "---"
+  puts "Read notifications (#{read_notifications.count})"
+  read_notifications.each do |notification|
+    puts "--#{notification.menu_string}"
+  end
 end
