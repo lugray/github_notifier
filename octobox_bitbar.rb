@@ -7,6 +7,8 @@ require 'net/http'
 require 'open3'
 
 TMP_DATA_FILE = '/tmp/octobox-bitbar-ids.json'.freeze
+MARK_READ_AND_OPEN = File.join(__dir__, 'octobox_mark_read_and_open.rb')
+ARCHIVE = File.join(__dir__, 'octobox_archive.rb')
 
 # Install terminal notifier gem if you want it.
 begin
@@ -28,6 +30,10 @@ class OctoboxNotification
   end
 
   def id
+    data.fetch('id')
+  end
+
+  def gh_id
     data.fetch('github_id')
   end
 
@@ -60,7 +66,7 @@ class OctoboxNotification
   end
 
   def menu_string
-    "#{repo_name} (#{short_type}) #{title}| href=#{url}"
+    "#{repo_name} (#{short_type}) #{title}"
   end
 end
 
@@ -86,7 +92,7 @@ end
 unread_notifications = notifications.select(&:unread?)
 read_notifications = notifications.select(&:read?)
 
-current_ids = unread_notifications.map(&:id).sort
+current_ids = unread_notifications.map(&:gh_id).sort
 
 previous_ids = begin
   JSON.parse(File.read(TMP_DATA_FILE))
@@ -127,12 +133,14 @@ View all in Octobox| href=https://octobox.shopify.io/
 ---
 EOF
 unread_notifications.each do |notification|
-  puts notification.menu_string
+  puts "#{notification.menu_string}| bash=#{MARK_READ_AND_OPEN} param1=#{notification.id} param2=#{notification.url} terminal=false"
+  puts "--Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true"
 end
 if read_notifications.any?
   puts "---"
   puts "Read notifications (#{read_notifications.count})"
   read_notifications.each do |notification|
-    puts "--#{notification.menu_string}"
+    puts "--#{notification.menu_string}| href=#{notification.url}"
+    puts "----Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true"
   end
 end
