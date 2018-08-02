@@ -133,12 +133,13 @@ View all in Octobox| href=https://octobox.shopify.io/
 ---
 EOF
 unread_notifications.each do |notification|
-  puts "#{notification.menu_string}| bash=#{MARK_READ_AND_OPEN} param1=#{notification.id} param2=#{notification.url} terminal=false"
+  puts "#{notification.menu_string}| bash=#{MARK_READ_AND_OPEN} param1=#{notification.id} param2=#{notification.url} terminal=false refresh=true"
   puts "--Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true"
 end
 if read_notifications.any?
   puts "---"
   puts "Read notifications (#{read_notifications.count})"
+  puts "--Archive all| bash=#{ARCHIVE} param1=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true"
   read_notifications.each do |notification|
     puts "--#{notification.menu_string}| href=#{notification.url}"
     puts "----Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true"
