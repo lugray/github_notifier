@@ -8,12 +8,13 @@ def fail(msg)
   exit 1
 end
 
+id = ARGV.shift
+system('open', *ARGV)
+
 token, _, t = Open3.capture3('security', 'find-generic-password', '-w', '-l', 'octobox-token')
 fail 'Cannot retrieve token' unless t.success?
 
 notifications = Net::HTTP.start('octobox.shopify.io', 443, use_ssl: true) do |http|
-  resp = http.post("/notifications/#{ARGV.shift}/mark_read.json", "", 'Authorization' => "Bearer #{token}", "X-Octobox-API" => "1")
+  resp = http.post("/notifications/#{id}/mark_read.json", "", 'Authorization' => "Bearer #{token}", "X-Octobox-API" => "1")
   fail "Cannot access octobox: #{resp}" unless resp.code.to_i == 200
 end
-
-exec('open', *ARGV)
