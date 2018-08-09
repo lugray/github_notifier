@@ -112,7 +112,7 @@ elsif notification_changed && unread_notifications.size == 1
     title: "Octobox",
     subtitle: "New #{notification.type} in #{notification.repo_name}",
     group: :octobox,
-    execute: "open '#{notification.url}'",
+    execute: "#{MARK_READ_AND_OPEN} '#{notification.id}' '#{notification.url}'",
     appIcon: "data:image/png;base64,#{IMAGE}",
   )
 elsif notification_changed
