@@ -3,6 +3,7 @@
 require 'json'
 require 'net/http'
 require 'open3'
+require 'openssl'
 
 # Install terminal notifier gem if you want it.
 begin
@@ -144,12 +145,14 @@ class OctoboxBitbar
   end
 
   def notifications
-    @notifications ||= Net::HTTP.start('octobox.shopify.io', 443, use_ssl: true) do |http|
-      resp = http.get('/notifications.json', 'Authorization' => "Bearer #{token}")
-      raise 'Cannot access octobox' unless resp.code.to_i == 200
+    begin_for_retry do
+      @notifications ||= Net::HTTP.start('octobox.shopify.io', 443, use_ssl: true) do |http|
+        resp = http.get('/notifications.json', 'Authorization' => "Bearer #{token}")
+        raise 'Cannot access octobox' unless resp.code.to_i == 200
 
-      JSON.parse(resp.body).fetch('notifications').map { |data| OctoboxNotification.new(data) }
-    end
+        JSON.parse(resp.body).fetch('notifications').map { |data| OctoboxNotification.new(data) }
+      end
+    end.retry_after(OpenSSL::SSL::SSLError, retries: 3)
   end
 
   def unread_notifications
@@ -179,6 +182,31 @@ class OctoboxBitbar
     current_ids != previous_ids
   end
 
+  def begin_for_retry(&block_that_might_raise)
+    Retrier.new(block_that_might_raise)
+  end
+
+  class Retrier
+    def initialize(block_that_might_raise)
+      @block_that_might_raise = block_that_might_raise
+    end
+
+    def retry_after(exception = StandardError, retries: 1, &before_retry)
+      @block_that_might_raise.call
+    rescue exception => e
+      raise if (retries -= 1) < 0
+      if before_retry
+        if before_retry.arity == 0
+          yield
+        else
+          yield e
+        end
+      end
+      retry
+    end
+  end
+
+  private_constant :Retrier
 end
 
 begin
