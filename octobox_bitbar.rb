@@ -101,6 +101,7 @@ class OctoboxBitbar
       "#{unread_notifications.size}| image=#{IMAGE}",
       "---",
       "View all in Octobox| href=https://octobox.shopify.io/",
+      "Refresh| refresh=true",
       "---",
     ]
 
