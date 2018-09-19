@@ -56,12 +56,50 @@ class OctoboxNotification
     data.fetch('repo').fetch('name')
   end
 
+  def state
+    data.fetch('subject').fetch('state')
+  end
+
+  def icon
+    case type
+    when 'Issue'
+      "!\u20DD"
+    when 'PullRequest'
+      '⭠ '
+    when 'Commit'
+      '⏀'
+    when 'Release'
+      '🏷'
+    when 'RepositoryVulnerabilityAlert'
+      '⚠︎'
+    else
+      raise "Unkown type: #{type}"
+    end
+  end
+
+  def color
+    case state
+    when 'open'
+      "\x1b[32m"
+    when 'merged'
+      "\x1b[35m"
+    when 'closed'
+      "\x1b[31m"
+    else
+      ''
+    end
+  end
+
+  def color_icon
+    "#{color}#{icon}\x1b[0m"
+  end
+
   def url
     data.fetch('web_url')
   end
 
   def menu_string
-    "#{repo_name} (#{short_type}) #{title}"
+    "#{color_icon} #{repo_name} #{title}"
   end
 end
 
