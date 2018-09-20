@@ -80,9 +80,9 @@ class OctoboxNotification
   def color
     case state
     when 'open'
-      "\x1b[32m"
+      "\x1b[1;32m"
     when 'merged'
-      "\x1b[35m"
+      "\x1b[1;35m"
     when 'closed'
       "\x1b[31m"
     else
