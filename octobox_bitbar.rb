@@ -136,7 +136,7 @@ class OctoboxBitbar
 
   def to_s
     msg = [
-      "#{unread_notifications.size}| image=#{IMAGE}",
+      "#{unread_notifications.size}/#{notifications.size}| image=#{IMAGE}",
       "---",
       "View all in Octobox| href=https://octobox.shopify.io/",
       "Refresh| refresh=true",
@@ -155,14 +155,13 @@ class OctoboxBitbar
     if read_notifications.any?
       msg.concat([
         "---",
-        "Read notifications (#{read_notifications.count})",
-        "--Archive all| bash=#{ARCHIVE} param1=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
+        "Archive all read notifications| bash=#{ARCHIVE} param1=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
       ])
       msg.concat(
         read_notifications.flat_map do |notification|
           [
-            "--#{notification.menu_string}| href=#{notification.url}",
-            "----Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true",
+            "#{notification.menu_string}| href=#{notification.url}",
+            "--Archive| bash=#{ARCHIVE} param1=#{notification.id} terminal=false refresh=true",
           ]
         end
       )
