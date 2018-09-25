@@ -136,7 +136,7 @@ class OctoboxBitbar
 
   def to_s
     msg = [
-      "#{unread_notifications.size}/#{notifications.size}| image=#{IMAGE}",
+      "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE}",
       "---",
       "View all in Octobox| href=https://octobox.shopify.io/",
       "Refresh| refresh=true",
