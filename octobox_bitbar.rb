@@ -143,7 +143,7 @@ class OctoboxBitbar
 
   def to_s
     msg = [
-      "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE_INVERTED}",
+      "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE}",
       "---",
       "View all in Octobox| href=https://octobox.shopify.io/",
       "Refresh| refresh=true",
@@ -257,7 +257,7 @@ end
 begin
   puts OctoboxBitbar.new.tap(&:set_notification)
 rescue StandardError => e
-  puts "💥 #{e.message}| templateImage=#{OctoboxBitbar::IMAGE_INVERTED}"
+  puts "💥 #{e.message}| templateImage=#{OctoboxBitbar::IMAGE}"
   puts "---"
   puts "#{e.class}: #{e.message}"
   puts e.backtrace
