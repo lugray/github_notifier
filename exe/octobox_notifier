@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby --disable-gems
+
+require_relative '../bin/load'
+
+exit(OctoboxNotifier::ErrorHandler.call do
+  OctoboxNotifier::EntryPoint.call(ARGV.dup)
+end)
