@@ -1,4 +1,4 @@
-#!/usr/ruby
+#!/usr/bin/ruby
 
 require 'net/http'
 require 'open3'
