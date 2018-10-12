@@ -33,7 +33,7 @@ module OctoboxNotifier
         msg = [
           "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE}",
           "---",
-          "View all in Octobox| href=https://octobox.shopify.io/",
+          "View all in Octobox| href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
           "Refresh| refresh=true",
           "---",
         ]

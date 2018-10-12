@@ -24,7 +24,7 @@ module OctoboxNotifier
             title: 'Octobox',
             subtitle: 'Pending review',
             group: :octobox,
-            execute: 'open https://octobox.shopify.io/',
+            execute: "open https://#{OctoboxNotifier::Config.get('server', 'host')}/",
             appIcon: "data:image/png;base64,#{image}",
           )
         end
