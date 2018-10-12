@@ -14,8 +14,10 @@ module OctoboxNotifier
   IMAGE = Base64.strict_encode64(File.read(File.join(ROOT, "images/logo_black.png")))
   IMAGE_INVERTED = Base64.strict_encode64(File.read(File.join(ROOT, "images/logo_white.png")))
   TMP_DATA_FILE = '/tmp/octobox-bitbar-ids.json'.freeze
-  MARK_READ_AND_OPEN = "#{File.join(ROOT, 'exe/octobox_notifier')} param1=open"
-  ARCHIVE =  "#{File.join(ROOT, 'exe/octobox_notifier')} param1=archive"
+
+  EXECUTABLE = File.join(ROOT, 'exe/octobox_notifier')
+  MARK_READ_AND_OPEN = "'#{EXECUTABLE}' param1=open"
+  ARCHIVE =  "'#{EXECUTABLE}' param1=archive"
 
   autoload(:API, 'octobox_notifier/api')
   autoload(:Commands, 'octobox_notifier/commands')
