@@ -15,7 +15,7 @@ module OctoboxNotifier
             title: "Octobox",
             subtitle: "New #{notification.type} in #{notification.repo_name}",
             group: :octobox,
-            execute: "#{MARK_READ_AND_OPEN} '#{notification.id}' '#{notification.url}'",
+            execute: "'#{EXECUTABLE}' 'open' '#{notification.id}' '#{notification.url}'",
             appIcon: "data:image/png;base64,#{image}",
           )
         elsif notification_changed
