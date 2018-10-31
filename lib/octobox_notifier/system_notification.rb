@@ -8,7 +8,7 @@ module OctoboxNotifier
         return unless always || OctoboxNotifier::Config.get_bool("notification", "display")
         if unread_notifications.empty?
           TerminalNotifier.remove(:octobox)
-        elsif notification_changed && unread_notifications.size == 1
+        elsif new_notifications? && unread_notifications.size == 1
           notification = unread_notifications.first
           TerminalNotifier.notify(
             notification.title,
@@ -18,7 +18,7 @@ module OctoboxNotifier
             execute: "#{MARK_READ_AND_OPEN} '#{notification.id}' '#{notification.url}'",
             appIcon: "data:image/png;base64,#{image}",
           )
-        elsif notification_changed
+        elsif new_notifications?
           TerminalNotifier.notify(
             pluralize(unread_notifications.size, "unread item"),
             title: 'Octobox',
@@ -53,8 +53,8 @@ module OctoboxNotifier
         "#{n} #{str}#{'s' unless n == 1}"
       end
 
-      def notification_changed
-        current_ids != previous_ids
+      def new_notifications?
+        !(current_ids - previous_ids).empty?
       end
 
       def current_ids
