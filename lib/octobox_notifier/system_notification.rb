@@ -54,7 +54,7 @@ module OctoboxNotifier
       end
 
       def new_notifications?
-        !(current_ids - previous_ids).empty?
+        (current_ids - previous_ids).any?
       end
 
       def current_ids
