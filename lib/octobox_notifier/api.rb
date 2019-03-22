@@ -12,7 +12,7 @@ module OctoboxNotifier
       def get(url, headers = {})
         start do |http|
           resp = http.get(url, default_headers.merge(headers))
-          raise(CLI::Kit::Abort, "Cannot access octobox: #{resp}") unless resp.code.to_i == 200
+          raise(CLI::Kit::Abort, "Cannot access octobox: #{resp}") unless resp.code.to_i < 400
           resp
         end
       end
@@ -20,7 +20,7 @@ module OctoboxNotifier
       def post(url, data, headers = {})
         start do |http|
           resp = http.post(url, data, default_headers.merge(headers))
-          raise(CLI::Kit::Abort, "Cannot access octobox: #{resp}") unless resp.code.to_i == 200
+          raise(CLI::Kit::Abort, "Cannot access octobox: #{resp}") unless resp.code.to_i < 400
           resp
         end
       end

@@ -1,8 +1,20 @@
+# frozen_string_literal: true
+
 require 'octobox_notifier'
 
 module OctoboxNotifier
   class Notification
     attr_reader :data
+
+    OPEN   = 'open'
+    MERGED = 'merged'
+    CLOSED = 'closed'
+
+    ISSUE                          = 'Issue'
+    PULL_REQUEST                   = 'PullRequest'
+    COMMIT                         = 'Commit'
+    RELEASE                        = 'Release'
+    REPOSITORY_VULNERABILITY_ALERT = 'RepositoryVulnerabilityAlert'
 
     def initialize(data)
       @data = data
@@ -28,6 +40,18 @@ module OctoboxNotifier
       !unread?
     end
 
+    def open?
+      state == OPEN
+    end
+
+    def pr?
+      type == PULL_REQUEST
+    end
+
+    def unread_open_pr?
+      unread? && open? && pr?
+    end
+
     def type
       data.fetch('subject').fetch('type')
     end
@@ -46,15 +70,15 @@ module OctoboxNotifier
 
     def icon
       case type
-      when 'Issue'
+      when ISSUE
         "!\u20DD"
-      when 'PullRequest'
+      when PULL_REQUEST
         '⭠ '
-      when 'Commit'
+      when COMMIT
         '⏀'
-      when 'Release'
+      when RELEASE
         '🏷'
-      when 'RepositoryVulnerabilityAlert'
+      when REPOSITORY_VULNERABILITY_ALERT
         '⚠︎'
       else
         raise "Unkown type: #{type}"
@@ -63,14 +87,14 @@ module OctoboxNotifier
 
     def color
       case state
-      when 'open'
+      when OPEN
         "\x1b[1;32m"
-      when 'merged'
+      when MERGED
         "\x1b[1;35m"
-      when 'closed'
+      when CLOSED
         "\x1b[31m"
       else
-        ''
+        raise "Unkown state: #{type}"
       end
     end
 

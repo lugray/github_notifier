@@ -15,7 +15,7 @@ module OctoboxNotifier
   IMAGE_INVERTED = Base64.strict_encode64(File.read(File.join(ROOT, "images/logo_white.png")))
   TMP_DATA_FILE = '/tmp/octobox-bitbar-ids.json'.freeze
 
-  EXECUTABLE = File.join(ROOT, 'exe/octobox_notifier')
+  EXECUTABLE = File.join(ROOT, 'exe/shadowenv_bitbar')
   MARK_READ_AND_OPEN = "'#{EXECUTABLE}' param1=open"
   ARCHIVE =  "'#{EXECUTABLE}' param1=archive"
 
@@ -25,6 +25,7 @@ module OctoboxNotifier
   autoload(:Notification, 'octobox_notifier/notification')
   autoload(:Setup, 'octobox_notifier/setup')
   autoload(:SystemNotification, 'octobox_notifier/system_notification')
+  autoload(:KeyboardNotification, 'octobox_notifier/keyboard_notification')
 
   autocall(:Config) { CLI::Kit::Config.new(tool_name: OctoboxNotifier::TOOL_NAME) }
   autocall(:Command) { CLI::Kit::BaseCommand }
