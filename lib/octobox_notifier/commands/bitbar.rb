@@ -7,6 +7,7 @@ module OctoboxNotifier
     class Bitbar < OctoboxNotifier::Command
       def call(args, _name)
         OctoboxNotifier::SystemNotification.show(notifications)
+        OctoboxNotifier::KeyboardNotification.show(notifications)
         puts output
       end
 

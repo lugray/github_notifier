@@ -1,5 +1,13 @@
+name: octobox-notifier
+type:
+  - ruby
+
 up:
   - ruby: 2.5.1
+  - bundler
 
 build: bin/update-deps
 console: bin/console
+
+commands:
+  run: "exe/octobox_notifier"
