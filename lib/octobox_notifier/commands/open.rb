@@ -8,7 +8,7 @@ module OctoboxNotifier
 
         CLI::Kit::System.system('open', *to_open)
 
-        OctoboxNotifier::API.post("/notifications/#{id}/mark_read.json", "")
+        OctoboxNotifier::API.post("/notifications/mark_read_selected.json?id=#{id}", "")
       end
     end
   end
