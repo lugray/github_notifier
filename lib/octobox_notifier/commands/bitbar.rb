@@ -34,8 +34,8 @@ module OctoboxNotifier
         msg = [
           "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE}",
           "---",
-          "View all in Octobox| href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
-          "Refresh| refresh=true",
+          "👀 View all in Octobox| href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
+          "🔃 Refresh| refresh=true",
           "---",
         ]
 
@@ -43,7 +43,7 @@ module OctoboxNotifier
           unread_notifications.flat_map do |notification|
             [
               "#{notification.menu_string}| bash=#{MARK_READ_AND_OPEN} param2=#{notification.id} param3=#{notification.url} terminal=false refresh=true",
-              "--Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
+              "--🗑 Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
             ]
           end
         )
@@ -51,13 +51,13 @@ module OctoboxNotifier
         if read_notifications.any?
           msg.concat([
             "---",
-            "Archive all read notifications| bash=#{ARCHIVE} param2=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
+            "🗑 Archive all read notifications| bash=#{ARCHIVE} param2=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
           ])
           msg.concat(
             read_notifications.flat_map do |notification|
               [
                 "#{notification.menu_string}| href=#{notification.url}",
-                "--Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
+                "--🗑 Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
               ]
             end
           )
