@@ -93,8 +93,10 @@ module OctoboxNotifier
         "\x1b[1;35m"
       when CLOSED
         "\x1b[31m"
+      when nil
+        ''
       else
-        raise "Unkown state: #{type}"
+        raise "Unkown state: #{state}"
       end
     end
 
