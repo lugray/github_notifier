@@ -1,4 +1,5 @@
 require 'serialport'
+require 'timeout'
 
 module OctoboxNotifier
   module KeyboardNotification
@@ -18,10 +19,14 @@ module OctoboxNotifier
 
       def response
         lines = []
-        until (line = @serial.readline.chomp) == "."
-          lines << line
+        Timeout.timeout(2) do
+          until (line = @serial.readline.chomp) == "."
+            lines << line
+          end
         end
         lines
+      rescue Timeout::Error
+        nil
       end
     end
 
