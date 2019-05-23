@@ -73,7 +73,7 @@ module OctoboxNotifier
       when ISSUE
         "!\u20DD"
       when PULL_REQUEST
-        '⭠ '
+        '⥉ '
       when COMMIT
         '⏀'
       when RELEASE
