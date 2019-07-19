@@ -32,18 +32,18 @@ module OctoboxNotifier
 
       def output
         msg = [
-          "#{unread_notifications.size}/#{notifications.size}| templateImage=#{IMAGE}",
+          "#{unread_notifications.size}/#{notifications.size}| templateImage=#{Image.get('logo')}",
           "---",
-          "👀 View all in Octobox| href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
-          "🔃 Refresh| refresh=true",
+          "View all in Octobox| templateImage=#{Image.get('inbox')} href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
+          "Refresh| templateImage=#{Image.get('refresh')} refresh=true",
           "---",
         ]
 
         msg.concat(
           unread_notifications.flat_map do |notification|
             [
-              "#{notification.menu_string}| bash=#{MARK_READ_AND_OPEN} param2=#{notification.id} param3=#{notification.url} terminal=false refresh=true",
-              "--🗑 Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
+              "#{notification.menu_string} bash=#{MARK_READ_AND_OPEN} param2=#{notification.id} param3=#{notification.url} terminal=false refresh=true",
+              "--Archive| templateImage=#{Image.get('archive')} bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
             ]
           end
         )
@@ -51,13 +51,13 @@ module OctoboxNotifier
         if read_notifications.any?
           msg.concat([
             "---",
-            "🗑 Archive all read notifications| bash=#{ARCHIVE} param2=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
+            "Archive all read notifications| templateImage=#{Image.get('archive')} bash=#{ARCHIVE} param2=#{read_notifications.map(&:id).join(',')} terminal=false refresh=true",
           ])
           msg.concat(
             read_notifications.flat_map do |notification|
               [
-                "#{notification.menu_string}| href=#{notification.url}",
-                "--🗑 Archive| bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
+                "#{notification.menu_string} href=#{notification.url}",
+                "--Archive| templateImage=#{Image.get('archive')} bash=#{ARCHIVE} param2=#{notification.id} terminal=false refresh=true",
               ]
             end
           )

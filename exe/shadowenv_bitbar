@@ -2,4 +2,5 @@
 
 cd "$(ruby -e "puts File.expand_path('../..', File.realpath('$0'))")"
 eval "$("/usr/local/bin/shadowenv" hook "" 2>/dev/null)"
+export PATH="/usr/local/bin:$PATH"
 exe/octobox_notifier "$@"

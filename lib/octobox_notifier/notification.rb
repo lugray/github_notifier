@@ -9,6 +9,7 @@ module OctoboxNotifier
     OPEN   = 'open'
     MERGED = 'merged'
     CLOSED = 'closed'
+    DRAFT  = 'draft'
 
     ISSUE                          = 'Issue'
     PULL_REQUEST                   = 'PullRequest'
@@ -68,40 +69,33 @@ module OctoboxNotifier
       data.fetch('subject').fetch('state')
     end
 
+    def draft?
+      data.fetch('subject').fetch('draft', false)
+    end
+
     def icon
-      case type
-      when ISSUE
-        "!\u20DD"
-      when PULL_REQUEST
-        '⥉ '
-      when COMMIT
-        '⏀'
-      when RELEASE
-        '🏷'
-      when REPOSITORY_VULNERABILITY_ALERT
-        '⚠︎'
+      case Each[type, state, draft?]
+      when Each[ISSUE, OPEN, ANY]
+        "image=#{Image.get('issue', Image::GREEN)}"
+      when Each[ISSUE, CLOSED, ANY]
+        "image=#{Image.get('issue_closed', Image::RED)}"
+      when Each[PULL_REQUEST, ANY, true]
+        "image=#{Image.get('pr', Image::GRAY)}"
+      when Each[PULL_REQUEST, OPEN, ANY]
+        "image=#{Image.get('pr', Image::GREEN)}"
+      when Each[PULL_REQUEST, CLOSED, ANY]
+        "image=#{Image.get('pr', Image::RED)}"
+      when Each[PULL_REQUEST, MERGED, ANY]
+        "image=#{Image.get('pr', Image::PURPLE)}"
+      when Each[COMMIT, ANY, ANY]
+        "templateImage=#{Image.get('commit')}"
+      when Each[RELEASE, ANY, ANY]
+        "templateImage=#{Image.get('release')}"
+      when Each[REPOSITORY_VULNERABILITY_ALERT, ANY, ANY]
+        "templateImage=#{Image.get('alert')}"
       else
-        raise "Unkown type: #{type}"
+        raise "Unkown type, state, draft combo: #{type}, #{state}, #{draft}"
       end
-    end
-
-    def color
-      case state
-      when OPEN
-        "\x1b[1;32m"
-      when MERGED
-        "\x1b[1;35m"
-      when CLOSED
-        "\x1b[31m"
-      when nil
-        ''
-      else
-        raise "Unkown state: #{state}"
-      end
-    end
-
-    def color_icon
-      "#{color}#{icon}\x1b[0m"
     end
 
     def url
@@ -109,7 +103,7 @@ module OctoboxNotifier
     end
 
     def menu_string
-      "#{color_icon} #{repo_name} #{title}"
+      "#{repo_name} #{title}| #{icon}"
     end
   end
 end

@@ -46,7 +46,7 @@ module OctoboxNotifier
         out, _ = CLI::Kit::System.capture2('defaults', 'read', '-g', 'AppleInterfaceStyle')
         # Default logo is mostly black, so use inverted for "Dark" theme
         # Test on "Dark", so it gracefully supports where the AppleInterfaceStyle option doesn't exist
-        out.chomp == "Dark" ? OctoboxNotifier::IMAGE_INVERTED : OctoboxNotifier::IMAGE
+        Image.get('logo', out.chomp == 'Dark' ? Image::WHITE : nil)
       end
 
       def pluralize(n, str)
