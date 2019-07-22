@@ -94,7 +94,7 @@ module OctoboxNotifier
       when Each[REPOSITORY_VULNERABILITY_ALERT, ANY, ANY]
         "templateImage=#{Image.get('alert')}"
       else
-        raise "Unkown type, state, draft combo: #{type}, #{state}, #{draft}"
+        raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft}"
       end
     end
 
