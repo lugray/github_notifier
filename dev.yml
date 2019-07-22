@@ -3,6 +3,8 @@ type:
   - ruby
 
 up:
+  - homebrew:
+    - imagemagick
   - ruby: 2.5.1
   - bundler
 
