@@ -49,8 +49,8 @@ module OctoboxNotifier
       type == PULL_REQUEST
     end
 
-    def unread_open_pr?
-      unread? && open? && pr?
+    def unread_open_non_draft_pr?
+      unread? && open? && pr? && !draft?
     end
 
     def type
