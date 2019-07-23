@@ -11,11 +11,11 @@ module OctoboxNotifier
     CLOSED = 'closed'
     DRAFT  = 'draft'
 
-    ISSUE                          = 'Issue'
-    PULL_REQUEST                   = 'PullRequest'
-    COMMIT                         = 'Commit'
-    RELEASE                        = 'Release'
-    REPOSITORY_VULNERABILITY_ALERT = 'RepositoryVulnerabilityAlert'
+    ISSUE        = 'Issue'
+    PULL_REQUEST = 'PullRequest'
+    COMMIT       = 'Commit'
+    RELEASE      = 'Release'
+    ALERT        = 'RepositoryVulnerabilityAlert'
 
     def initialize(data)
       @data = data
@@ -74,27 +74,17 @@ module OctoboxNotifier
     end
 
     def icon
-      case Each[type, state, draft?]
-      when Each[ISSUE, OPEN, ANY]
-        "image=#{Image.get('issue', Image::GREEN)}"
-      when Each[ISSUE, CLOSED, ANY]
-        "image=#{Image.get('issue_closed', Image::RED)}"
-      when Each[PULL_REQUEST, ANY, true]
-        "image=#{Image.get('pr', Image::GRAY)}"
-      when Each[PULL_REQUEST, OPEN, ANY]
-        "image=#{Image.get('pr', Image::GREEN)}"
-      when Each[PULL_REQUEST, CLOSED, ANY]
-        "image=#{Image.get('pr', Image::RED)}"
-      when Each[PULL_REQUEST, MERGED, ANY]
-        "image=#{Image.get('pr', Image::PURPLE)}"
-      when Each[COMMIT, ANY, ANY]
-        "templateImage=#{Image.get('commit')}"
-      when Each[RELEASE, ANY, ANY]
-        "templateImage=#{Image.get('release')}"
-      when Each[REPOSITORY_VULNERABILITY_ALERT, ANY, ANY]
-        "templateImage=#{Image.get('alert')}"
-      else
-        raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft}"
+      case Each[type,         state,  draft?]
+      when Each[ISSUE,        OPEN,   ANY   ] ; "image=#{Image.get('issue', Image::GREEN)}"
+      when Each[ISSUE,        CLOSED, ANY   ] ; "image=#{Image.get('issue_closed', Image::RED)}"
+      when Each[PULL_REQUEST, ANY,    true  ] ; "image=#{Image.get('pr', Image::GRAY)}"
+      when Each[PULL_REQUEST, OPEN,   ANY   ] ; "image=#{Image.get('pr', Image::GREEN)}"
+      when Each[PULL_REQUEST, CLOSED, ANY   ] ; "image=#{Image.get('pr', Image::RED)}"
+      when Each[PULL_REQUEST, MERGED, ANY   ] ; "image=#{Image.get('pr', Image::PURPLE)}"
+      when Each[COMMIT,       ANY,    ANY   ] ; "templateImage=#{Image.get('commit')}"
+      when Each[RELEASE,      ANY,    ANY   ] ; "templateImage=#{Image.get('release')}"
+      when Each[ALERT,        ANY,    ANY   ] ; "templateImage=#{Image.get('alert')}"
+      else                                    ; raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft}"
       end
     end
 
