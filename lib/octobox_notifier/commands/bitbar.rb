@@ -16,7 +16,7 @@ module OctoboxNotifier
       def notifications
         @notifications ||= begin
           resp = CLI::Kit::Util.begin do
-            OctoboxNotifier::API.get( "/notifications.json")
+            OctoboxNotifier::API.get( "/notifications.json?per_page=100")
           end.retry_after(OpenSSL::SSL::SSLError, retries: 3)
           JSON.parse(resp.body).fetch('notifications').map { |data| OctoboxNotifier::Notification.new(data) }
         end
