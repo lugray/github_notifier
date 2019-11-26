@@ -84,7 +84,7 @@ module OctoboxNotifier
       when Each[COMMIT,       ANY,    ANY   ] ; "templateImage=#{Image.get('commit')}"
       when Each[RELEASE,      ANY,    ANY   ] ; "templateImage=#{Image.get('release')}"
       when Each[ALERT,        ANY,    ANY   ] ; "templateImage=#{Image.get('alert')}"
-      else                                    ; raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft}"
+      else                                    ; raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft?} for #{url}"
       end
     end
 
