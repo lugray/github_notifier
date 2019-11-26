@@ -81,6 +81,7 @@ module OctoboxNotifier
       when Each[PULL_REQUEST, OPEN,   ANY   ] ; "image=#{Image.get('pr', Image::GREEN)}"
       when Each[PULL_REQUEST, CLOSED, ANY   ] ; "image=#{Image.get('pr', Image::RED)}"
       when Each[PULL_REQUEST, MERGED, ANY   ] ; "image=#{Image.get('pr', Image::PURPLE)}"
+      when Each[PULL_REQUEST, ANY,    ANY   ] ; "image=#{Image.get('pr', Image::GREEN)}"
       when Each[COMMIT,       ANY,    ANY   ] ; "templateImage=#{Image.get('commit')}"
       when Each[RELEASE,      ANY,    ANY   ] ; "templateImage=#{Image.get('release')}"
       when Each[ALERT,        ANY,    ANY   ] ; "templateImage=#{Image.get('alert')}"
