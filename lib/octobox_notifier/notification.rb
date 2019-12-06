@@ -77,6 +77,7 @@ module OctoboxNotifier
       case Each[type,         state,  draft?]
       when Each[ISSUE,        OPEN,   ANY   ] ; "image=#{Image.get('issue', Image::GREEN)}"
       when Each[ISSUE,        CLOSED, ANY   ] ; "image=#{Image.get('issue_closed', Image::RED)}"
+      when Each[ISSUE,        ANY,    ANY   ] ; "image=#{Image.get('issue', Image::GRAY)}"
       when Each[PULL_REQUEST, ANY,    true  ] ; "image=#{Image.get('pr', Image::GRAY)}"
       when Each[PULL_REQUEST, OPEN,   ANY   ] ; "image=#{Image.get('pr', Image::GREEN)}"
       when Each[PULL_REQUEST, CLOSED, ANY   ] ; "image=#{Image.get('pr', Image::RED)}"
