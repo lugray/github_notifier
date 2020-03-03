@@ -1,6 +1,7 @@
 require 'json'
 require 'octobox_notifier'
 require 'openssl'
+require 'socket'
 
 module OctoboxNotifier
   module Commands
@@ -9,6 +10,17 @@ module OctoboxNotifier
         OctoboxNotifier::SystemNotification.show(notifications)
         OctoboxNotifier::KeyboardNotification.show(notifications)
         puts output
+      rescue SocketError
+        puts "| image=#{Image.get('logo', Image::RED)}"
+        puts "---"
+        puts "Network not available"
+        puts "Refresh| templateImage=#{Image.get('refresh')} refresh=true"
+      rescue
+        puts "| image=#{Image.get('logo', Image::RED)}"
+        puts "---"
+        puts "An error occured"
+        puts "Refresh| templateImage=#{Image.get('refresh')} refresh=true"
+        raise
       end
 
       private
