@@ -12,7 +12,7 @@ module OctoboxNotifier
           notification = unread_notifications.first
           TerminalNotifier.notify(
             notification.title,
-            title: "Octobox",
+            title: "GitHub",
             subtitle: "New #{notification.type} in #{notification.repo_name}",
             group: :octobox,
             execute: "'#{EXECUTABLE}' 'open' '#{notification.id}' '#{notification.url}'",
@@ -21,7 +21,7 @@ module OctoboxNotifier
         elsif new_notifications?
           TerminalNotifier.notify(
             pluralize(unread_notifications.size, "unread item"),
-            title: 'Octobox',
+            title: 'GitHub',
             subtitle: 'Pending review',
             group: :octobox,
             execute: "open https://#{OctoboxNotifier::Config.get('server', 'host')}/",
