@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'octobox_notifier'
+require 'github_notifier'
 
-module OctoboxNotifier
+module GithubNotifier
   class Notification
     attr_reader :data
 

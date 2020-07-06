@@ -1,9 +1,9 @@
-require 'octobox_notifier'
+require 'github_notifier'
 require 'optparse'
 
-module OctoboxNotifier
+module GithubNotifier
   module Commands
-    class Setup < OctoboxNotifier::Command
+    class Setup < GithubNotifier::Command
       def call(args, _name)
         options = parse_args(args)
         unless options.key?(:token)
@@ -12,14 +12,14 @@ module OctoboxNotifier
         unless options.key?(:notify)
           options[:notify] = CLI::UI::Prompt.ask("Would you like to get system notifications?", options: ["Yes", "No"]) == "Yes"
         end
-        OctoboxNotifier::Config.set("server", "token", options[:token])
-        OctoboxNotifier::Config.set("notification", "display", options[:notify])
+        GithubNotifier::Config.set("server", "token", options[:token])
+        GithubNotifier::Config.set("notification", "display", options[:notify])
       end
 
       def parse_args(args)
         options = {}
         OptionParser.new do |opts|
-          opts.banner = "Usage: octobox_notifier setup [options]"
+          opts.banner = "Usage: github_notifier setup [options]"
 
           opts.on("-t", "--token <TOKEN>", "Your GitHub API token (Create at https://github.com/settings/tokens/new?scopes=notifications&description=notifier)") do |token|
             options[:token] = token

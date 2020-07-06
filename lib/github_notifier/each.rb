@@ -1,4 +1,4 @@
-module OctoboxNotifier
+module GithubNotifier
   class Each < Array
     class << self
       def [](*items)

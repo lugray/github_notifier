@@ -1,7 +1,7 @@
 require 'serialport'
 require 'timeout'
 
-module OctoboxNotifier
+module GithubNotifier
   module KeyboardNotification
     class Focus
       ConnectionError = Class.new(StandardError)
@@ -33,7 +33,7 @@ module OctoboxNotifier
     class << self
       def show(notifications, always: false)
         focus = Focus.new
-        return unless always || OctoboxNotifier::Config.get_bool("notification", "keyboard")
+        return unless always || GithubNotifier::Config.get_bool("notification", "keyboard")
         focus.command('led.unset-all')
         n = notifications.select(&:unread_open_non_draft_pr?).size
         if n > 0

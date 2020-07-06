@@ -1,14 +1,14 @@
 require 'json'
-require 'octobox_notifier'
+require 'github_notifier'
 require 'openssl'
 require 'socket'
 
-module OctoboxNotifier
+module GithubNotifier
   module Commands
-    class Bitbar < OctoboxNotifier::Command
+    class Bitbar < GithubNotifier::Command
       def call(args, _name)
-        OctoboxNotifier::SystemNotification.show(notifications)
-        OctoboxNotifier::KeyboardNotification.show(notifications)
+        GithubNotifier::SystemNotification.show(notifications)
+        GithubNotifier::KeyboardNotification.show(notifications)
         puts output
       rescue SocketError
         puts "| image=#{Image.get('logo', Image::RED)}"
@@ -28,9 +28,9 @@ module OctoboxNotifier
       def notifications
         @notifications ||= begin
           resp = CLI::Kit::Util.begin do
-            OctoboxNotifier::API.get( "/notifications.json?per_page=100")
+            GithubNotifier::API.get( "/notifications.json?per_page=100")
           end.retry_after(OpenSSL::SSL::SSLError, retries: 3)
-          JSON.parse(resp.body).fetch('notifications').map { |data| OctoboxNotifier::Notification.new(data) }
+          JSON.parse(resp.body).fetch('notifications').map { |data| GithubNotifier::Notification.new(data) }
         end
       end
 
@@ -46,7 +46,7 @@ module OctoboxNotifier
         msg = [
           "#{unread_notifications.size}/#{notifications.size}| templateImage=#{Image.get('logo')}",
           "---",
-          "View all in Octobox| templateImage=#{Image.get('inbox')} href=https://#{OctoboxNotifier::Config.get('server', 'host')}/",
+          "View all in Github| templateImage=#{Image.get('inbox')} href=https://#{GithubNotifier::Config.get('server', 'host')}/",
           "Refresh| templateImage=#{Image.get('refresh')} refresh=true",
           "---",
         ]

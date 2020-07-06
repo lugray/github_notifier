@@ -3,5 +3,5 @@ Encoding.default_internal = Encoding::UTF_8
 
 $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 
-require 'octobox_notifier'
+require 'github_notifier'
 
