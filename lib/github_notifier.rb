@@ -15,8 +15,7 @@ module GithubNotifier
   NOTIFICATIONS_CACHE = File.join(TOOL_CACHE_PATH, 'notifications')
 
   EXECUTABLE = File.join(ROOT, 'exe/shadowenv_bitbar')
-  MARK_READ_AND_OPEN = "'#{EXECUTABLE}' param1=open"
-  ARCHIVE =  "'#{EXECUTABLE}' param1=archive"
+  OPEN = "'#{EXECUTABLE}' param1=open"
 
   autoload(:API,                  'github_notifier/api')
   autoload(:Commands,             'github_notifier/commands')

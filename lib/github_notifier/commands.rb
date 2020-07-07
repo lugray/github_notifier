@@ -14,7 +14,6 @@ module GithubNotifier
       Registry.add(->() { const_get(const) }, cmd)
     end
 
-    register :Archive
     register :Bitbar
     register :Open
     register :Setup

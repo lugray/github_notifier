@@ -36,18 +36,7 @@ module GithubNotifier
       end
 
       def notifications
-        last_update = GithubNotifier::Config.get('notifications', 'last_update')
-        headers = {}
-        headers['If-Modified-Since'] = last_update if last_update && cached_notifications?
-        resp = get('/notifications?all=true', headers)
-        if resp.code.to_i == 304
-          File.read(NOTIFICATIONS_CACHE)
-        elsif resp.code.to_i == 200
-          FileUtils.mkdir_p(File.dirname(NOTIFICATIONS_CACHE))
-          File.write(NOTIFICATIONS_CACHE, resp.body.force_encoding('utf-8'))
-          GithubNotifier::Config.set('notifications', 'last_update', resp['Last-Modified'])
-          resp.body
-        end
+        get('/notifications').body
       end
     end
   end

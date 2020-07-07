@@ -22,19 +22,11 @@ module GithubNotifier
     end
 
     def id
-      data.fetch('id')
+      data.fetch('id').to_i
     end
 
     def title
       data.fetch('subject').fetch('title')
-    end
-
-    def unread?
-      data.fetch('unread')
-    end
-
-    def read?
-      !unread?
     end
 
     def open?
@@ -43,10 +35,6 @@ module GithubNotifier
 
     def pr?
       type == PULL_REQUEST
-    end
-
-    def unread_open_non_draft_pr?
-      unread? && open? && pr? && !draft?
     end
 
     def type
@@ -89,7 +77,7 @@ module GithubNotifier
     end
 
     def url
-      data.fetch('subject').fetch('url').sub('api.github.com', 'github.com')
+      data.fetch('subject').fetch('url').sub('api.github.com/repos', 'github.com')
     end
 
     def menu_string

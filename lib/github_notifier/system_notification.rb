@@ -6,25 +6,25 @@ module GithubNotifier
       def show(notifications, always: false)
         @notifications = notifications
         return unless always || GithubNotifier::Config.get_bool("notification", "display")
-        if unread_notifications.empty?
+        if notifications.empty?
           TerminalNotifier.remove(:github)
-        elsif new_notifications? && unread_notifications.size == 1
-          notification = unread_notifications.first
+        elsif new_notifications? && notifications.size == 1
+          notification = notifications.first
           TerminalNotifier.notify(
             notification.title,
             title: "GitHub",
             subtitle: "New #{notification.type} in #{notification.repo_name}",
             group: :github,
-            execute: "'#{EXECUTABLE}' 'open' '#{notification.id}' '#{notification.url}'",
+            execute: "'#{EXECUTABLE}' 'open' '#{notification.url}'",
             appIcon: "data:image/png;base64,#{image}",
           )
         elsif new_notifications?
           TerminalNotifier.notify(
-            pluralize(unread_notifications.size, "unread item"),
+            pluralize(notifications.size, "unread item"),
             title: 'GitHub',
             subtitle: 'Pending review',
             group: :github,
-            execute: "open https://#{GithubNotifier::Config.get('server', 'host')}/",
+            execute: "open https://github.com/notifications",
             appIcon: "data:image/png;base64,#{image}",
           )
         end
@@ -33,14 +33,6 @@ module GithubNotifier
       private
 
       attr_reader :notifications
-
-      def unread_notifications
-        notifications.select(&:unread?)
-      end
-
-      def read_notifications
-        notifications.select(&:read?)
-      end
 
       def image
         out, _ = CLI::Kit::System.capture2('defaults', 'read', '-g', 'AppleInterfaceStyle')
@@ -58,7 +50,7 @@ module GithubNotifier
       end
 
       def current_ids
-        unread_notifications.map(&:id).sort
+        notifications.map(&:id).sort
       end
 
       def previous_ids

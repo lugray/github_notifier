@@ -35,7 +35,7 @@ module GithubNotifier
         focus = Focus.new
         return unless always || GithubNotifier::Config.get_bool("notification", "keyboard")
         focus.command('led.unset-all')
-        n = notifications.select(&:unread_open_non_draft_pr?).size
+        n = notifications.size
         if n > 0
           focus.command('led.value', 50)
           if n < 6
