@@ -1,30 +1,30 @@
 require 'terminal-notifier'
 
-module OctoboxNotifier
+module GithubNotifier
   module SystemNotification
     class << self
       def show(notifications, always: false)
         @notifications = notifications
-        return unless always || OctoboxNotifier::Config.get_bool("notification", "display")
-        if unread_notifications.empty?
-          TerminalNotifier.remove(:octobox)
-        elsif new_notifications? && unread_notifications.size == 1
-          notification = unread_notifications.first
+        return unless always || GithubNotifier::Config.get_bool("notification", "display")
+        if notifications.empty?
+          TerminalNotifier.remove(:github)
+        elsif new_notifications? && notifications.size == 1
+          notification = notifications.first
           TerminalNotifier.notify(
             notification.title,
-            title: "Octobox",
+            title: "GitHub",
             subtitle: "New #{notification.type} in #{notification.repo_name}",
-            group: :octobox,
-            execute: "'#{EXECUTABLE}' 'open' '#{notification.id}' '#{notification.url}'",
+            group: :github,
+            execute: "'#{EXECUTABLE}' 'open' '#{notification.url}'",
             appIcon: "data:image/png;base64,#{image}",
           )
         elsif new_notifications?
           TerminalNotifier.notify(
-            pluralize(unread_notifications.size, "unread item"),
-            title: 'Octobox',
+            pluralize(notifications.size, "unread item"),
+            title: 'GitHub',
             subtitle: 'Pending review',
-            group: :octobox,
-            execute: "open https://#{OctoboxNotifier::Config.get('server', 'host')}/",
+            group: :github,
+            execute: "open https://github.com/notifications",
             appIcon: "data:image/png;base64,#{image}",
           )
         end
@@ -33,14 +33,6 @@ module OctoboxNotifier
       private
 
       attr_reader :notifications
-
-      def unread_notifications
-        notifications.select(&:unread?)
-      end
-
-      def read_notifications
-        notifications.select(&:read?)
-      end
 
       def image
         out, _ = CLI::Kit::System.capture2('defaults', 'read', '-g', 'AppleInterfaceStyle')
@@ -58,14 +50,14 @@ module OctoboxNotifier
       end
 
       def current_ids
-        unread_notifications.map(&:gh_id).sort
+        notifications.map(&:id).sort
       end
 
       def previous_ids
         return @previous_ids if defined?(@previous_ids)
-        ids_string = OctoboxNotifier::Config.get("notification", "previous_ids") || ""
+        ids_string = GithubNotifier::Config.get("notification", "previous_ids") || ""
         @previous_ids = ids_string.split(",").map(&:to_i)
-        OctoboxNotifier::Config.set("notification", "previous_ids", current_ids.join(','))
+        GithubNotifier::Config.set("notification", "previous_ids", current_ids.join(','))
         @previous_ids
       end
     end

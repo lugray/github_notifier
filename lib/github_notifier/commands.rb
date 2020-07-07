@@ -1,6 +1,6 @@
-require 'octobox_notifier'
+require 'github_notifier'
 
-module OctoboxNotifier
+module GithubNotifier
   module Commands
     Registry = CLI::Kit::CommandRegistry.new(
       default: 'bitbar',
@@ -9,12 +9,11 @@ module OctoboxNotifier
 
     def self.register(const, cmd = nil, path = nil)
       cmd ||= const.to_s.downcase
-      path ||= "octobox_notifier/commands/#{cmd}"
+      path ||= "github_notifier/commands/#{cmd}"
       autoload(const, path)
       Registry.add(->() { const_get(const) }, cmd)
     end
 
-    register :Archive
     register :Bitbar
     register :Open
     register :Setup

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'octobox_notifier'
+require 'github_notifier'
 
-module OctoboxNotifier
+module GithubNotifier
   class Notification
     attr_reader :data
 
@@ -22,23 +22,11 @@ module OctoboxNotifier
     end
 
     def id
-      data.fetch('id')
-    end
-
-    def gh_id
-      data.fetch('github_id')
+      data.fetch('id').to_i
     end
 
     def title
       data.fetch('subject').fetch('title')
-    end
-
-    def unread?
-      data.fetch('unread')
-    end
-
-    def read?
-      !unread?
     end
 
     def open?
@@ -47,10 +35,6 @@ module OctoboxNotifier
 
     def pr?
       type == PULL_REQUEST
-    end
-
-    def unread_open_non_draft_pr?
-      unread? && open? && pr? && !draft?
     end
 
     def type
@@ -62,15 +46,17 @@ module OctoboxNotifier
     end
 
     def repo_name
-      data.fetch('repo').fetch('name')
+      data.fetch('repository').fetch('name')
     end
 
     def state
-      data.fetch('subject').fetch('state')
+      # data.fetch('subject').fetch('state')
+      'Uknown'
     end
 
     def draft?
-      data.fetch('subject').fetch('draft', false)
+      # data.fetch('subject').fetch('draft', false)
+      false
     end
 
     def icon
@@ -91,7 +77,7 @@ module OctoboxNotifier
     end
 
     def url
-      data.fetch('web_url')
+      data.fetch('subject').fetch('url').sub('api.github.com/repos', 'github.com')
     end
 
     def menu_string

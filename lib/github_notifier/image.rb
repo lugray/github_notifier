@@ -1,4 +1,4 @@
-module OctoboxNotifier
+module GithubNotifier
   module Image
     GREEN          = '22DD22'
     RED            = 'DD0000'
@@ -7,7 +7,7 @@ module OctoboxNotifier
     WHITE          = 'FFFFFF'
     SIZE           = 64
     INPUT_DENSITY  = 1200 # Internal canvas
-    OUTPUT_DENSITY = 325 # Seems to work best with octobox
+    OUTPUT_DENSITY = 325 # Seems to work best with bitbar
 
     class << self
 

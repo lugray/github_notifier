@@ -1,4 +1,4 @@
-module OctoboxNotifier
+module GithubNotifier
   class Each < Array
     class << self
       def [](*items)
@@ -15,11 +15,9 @@ module OctoboxNotifier
     end
   end
 
-  class Any
-    def ===(other)
+  class ANY
+    def self.===(other)
       true
     end
   end
-
-  ANY = Any.new
 end

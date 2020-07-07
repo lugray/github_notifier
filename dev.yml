@@ -1,4 +1,4 @@
-name: octobox-notifier
+name: github-notifier
 type:
   - ruby
 
@@ -12,4 +12,4 @@ build: bin/update-deps
 console: bin/console
 
 commands:
-  run: "exe/octobox_notifier"
+  run: "exe/github_notifier"

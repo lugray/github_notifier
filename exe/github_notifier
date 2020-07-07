@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../bin/load'
+
+exit(GithubNotifier::ErrorHandler.call do
+  GithubNotifier::EntryPoint.call(ARGV.dup)
+end)

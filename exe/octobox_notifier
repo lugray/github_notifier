@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require_relative '../bin/load'
-
-exit(OctoboxNotifier::ErrorHandler.call do
-  OctoboxNotifier::EntryPoint.call(ARGV.dup)
-end)
