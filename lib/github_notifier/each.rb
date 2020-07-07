@@ -15,11 +15,9 @@ module GithubNotifier
     end
   end
 
-  class Any
-    def ===(other)
+  class ANY
+    def self.===(other)
       true
     end
   end
-
-  ANY = Any.new
 end

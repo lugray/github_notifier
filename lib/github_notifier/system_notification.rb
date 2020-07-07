@@ -58,7 +58,7 @@ module GithubNotifier
       end
 
       def current_ids
-        unread_notifications.map(&:gh_id).sort
+        unread_notifications.map(&:id).sort
       end
 
       def previous_ids

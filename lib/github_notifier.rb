@@ -7,11 +7,12 @@ CLI::UI::StdoutRouter.enable
 module GithubNotifier
   extend CLI::Kit::Autocall
 
-  TOOL_NAME = 'github_notifier'
-  ROOT      = File.expand_path('../..', __FILE__)
-  LOG_FILE  = '/tmp/github_notifier.log'
-
-  TMP_DATA_FILE = '/tmp/github-bitbar-ids.json'.freeze
+  TOOL_NAME           = 'github_notifier'
+  ROOT                = File.expand_path('../..', __FILE__)
+  LOG_FILE            = '/tmp/github_notifier.log'
+  CACHE_HOME          = File.expand_path(ENV.fetch('XDG_CACHE_HOME',  '~/.cache'))
+  TOOL_CACHE_PATH     = File.join(CACHE_HOME, TOOL_NAME)
+  NOTIFICATIONS_CACHE = File.join(TOOL_CACHE_PATH, 'notifications')
 
   EXECUTABLE = File.join(ROOT, 'exe/shadowenv_bitbar')
   MARK_READ_AND_OPEN = "'#{EXECUTABLE}' param1=open"

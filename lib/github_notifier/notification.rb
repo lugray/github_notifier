@@ -25,10 +25,6 @@ module GithubNotifier
       data.fetch('id')
     end
 
-    def gh_id
-      data.fetch('github_id')
-    end
-
     def title
       data.fetch('subject').fetch('title')
     end
@@ -62,15 +58,17 @@ module GithubNotifier
     end
 
     def repo_name
-      data.fetch('repo').fetch('name')
+      data.fetch('repository').fetch('name')
     end
 
     def state
-      data.fetch('subject').fetch('state')
+      # data.fetch('subject').fetch('state')
+      'Uknown'
     end
 
     def draft?
-      data.fetch('subject').fetch('draft', false)
+      # data.fetch('subject').fetch('draft', false)
+      false
     end
 
     def icon
@@ -91,7 +89,7 @@ module GithubNotifier
     end
 
     def url
-      data.fetch('web_url')
+      data.fetch('subject').fetch('url').sub('api.github.com', 'github.com')
     end
 
     def menu_string

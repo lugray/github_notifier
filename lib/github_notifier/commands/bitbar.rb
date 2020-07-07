@@ -27,10 +27,7 @@ module GithubNotifier
 
       def notifications
         @notifications ||= begin
-          resp = CLI::Kit::Util.begin do
-            GithubNotifier::API.get( "/notifications.json?per_page=100")
-          end.retry_after(OpenSSL::SSL::SSLError, retries: 3)
-          JSON.parse(resp.body).fetch('notifications').map { |data| GithubNotifier::Notification.new(data) }
+          JSON.parse(GithubNotifier::API.notifications).map { |data| GithubNotifier::Notification.new(data) }
         end
       end
 
