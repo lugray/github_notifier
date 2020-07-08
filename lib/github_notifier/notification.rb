@@ -17,6 +17,8 @@ module GithubNotifier
     RELEASE      = 'Release'
     ALERT        = 'RepositoryVulnerabilityAlert'
 
+    MAX_TITLE_LENGTH = 30
+
     def initialize(data)
       @data = data
     end
@@ -63,6 +65,14 @@ module GithubNotifier
       false
     end
 
+    def elided_title
+      if title.length > MAX_TITLE_LENGTH
+        "#{title[0...MAX_TITLE_LENGTH-1]}…"
+      else
+        title
+      end
+    end
+
     def icon
       case Each[type,         state,  draft?]
       when Each[ISSUE,        OPEN,   ANY   ] ; "image=#{Image.get('issue', Image::GREEN)}"
@@ -85,7 +95,7 @@ module GithubNotifier
     end
 
     def menu_string
-      "#{repo_name} #{title} (#{reason})| #{icon}"
+      "#{repo_name} #{elided_title} (#{reason})| #{icon}"
     end
   end
 end
