@@ -45,6 +45,10 @@ module GithubNotifier
       type.each_char.select { |c| c.upcase == c }.join
     end
 
+    def reason
+      data.fetch('reason')
+    end
+
     def repo_name
       data.fetch('repository').fetch('name')
     end
@@ -81,7 +85,7 @@ module GithubNotifier
     end
 
     def menu_string
-      "#{repo_name} #{title}| #{icon}"
+      "#{repo_name} #{title} (#{reason})| #{icon}"
     end
   end
 end
