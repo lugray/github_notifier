@@ -77,7 +77,7 @@ module GithubNotifier
     end
 
     def url
-      data.fetch('subject').fetch('url').sub('api.github.com/repos', 'github.com')
+      data.fetch('subject').fetch('url').sub('api.github.com/repos', 'github.com').sub('/pulls/', '/pull/')
     end
 
     def menu_string
