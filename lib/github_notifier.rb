@@ -25,7 +25,6 @@ module GithubNotifier
   autoload(:Notification,         'github_notifier/notification')
   autoload(:Setup,                'github_notifier/setup')
   autoload(:SystemNotification,   'github_notifier/system_notification')
-  autoload(:KeyboardNotification, 'github_notifier/keyboard_notification')
 
   autocall(:Config) { CLI::Kit::Config.new(tool_name: GithubNotifier::TOOL_NAME) }
   autocall(:Command) { CLI::Kit::BaseCommand }

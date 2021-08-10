@@ -8,7 +8,6 @@ module GithubNotifier
     class Bitbar < GithubNotifier::Command
       def call(args, _name)
         GithubNotifier::SystemNotification.show(notifications)
-        GithubNotifier::KeyboardNotification.show(notifications)
         puts output
       rescue SocketError
         puts "| image=#{Image.get('logo', Image::RED)}"
