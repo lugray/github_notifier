@@ -5,7 +5,7 @@ type:
 up:
   - homebrew:
     - imagemagick
-  - ruby: 2.5.1
+  - ruby: 3.0.2
   - bundler
 
 build: bin/update-deps

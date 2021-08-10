@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '2.5.1'
+ruby '3.0.2'
 
 gem 'terminal-notifier'
 gem 'cli-kit'
