@@ -7,7 +7,7 @@ GEM
     terminal-notifier (2.0.0)
 
 PLATFORMS
-  arm64-darwin-20
+  ruby
 
 DEPENDENCIES
   cli-kit
