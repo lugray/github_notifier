@@ -95,7 +95,7 @@ module GithubNotifier
     end
 
     def menu_string
-      "#{repo_name} #{elided_title} (#{reason})| #{icon}"
+      "#{repo_name} #{elided_title.gsub('|','⎸')} (#{reason})| #{icon}"
     end
   end
 end
