@@ -16,6 +16,16 @@ module GithubNotifier
     COMMIT       = 'Commit'
     RELEASE      = 'Release'
     ALERT        = 'RepositoryVulnerabilityAlert'
+    DISCUSSION   = 'Discussion'
+
+    ICONS = {
+      ISSUE        => 'issue',
+      PULL_REQUEST => 'pr',
+      COMMIT       => 'commit',
+      RELEASE      => 'release',
+      ALERT        => 'alert',
+      DISCUSSION   => 'discussion',
+    }.freeze
 
     MAX_TITLE_LENGTH = 30
 
@@ -55,16 +65,6 @@ module GithubNotifier
       data.fetch('repository').fetch('name')
     end
 
-    def state
-      # data.fetch('subject').fetch('state')
-      'Uknown'
-    end
-
-    def draft?
-      # data.fetch('subject').fetch('draft', false)
-      false
-    end
-
     def elided_title
       if title.length > MAX_TITLE_LENGTH
         "#{title[0...MAX_TITLE_LENGTH-1]}…"
@@ -74,28 +74,15 @@ module GithubNotifier
     end
 
     def icon
-      case Each[type,         state,  draft?]
-      when Each[ISSUE,        OPEN,   ANY   ] ; "image=#{Image.get('issue', Image::GREEN)}"
-      when Each[ISSUE,        CLOSED, ANY   ] ; "image=#{Image.get('issue_closed', Image::RED)}"
-      when Each[ISSUE,        ANY,    ANY   ] ; "image=#{Image.get('issue', Image::GRAY)}"
-      when Each[PULL_REQUEST, ANY,    true  ] ; "image=#{Image.get('pr', Image::GRAY)}"
-      when Each[PULL_REQUEST, OPEN,   ANY   ] ; "image=#{Image.get('pr', Image::GREEN)}"
-      when Each[PULL_REQUEST, CLOSED, ANY   ] ; "image=#{Image.get('pr', Image::RED)}"
-      when Each[PULL_REQUEST, MERGED, ANY   ] ; "image=#{Image.get('pr', Image::PURPLE)}"
-      when Each[PULL_REQUEST, ANY,    ANY   ] ; "image=#{Image.get('pr', Image::GRAY)}"
-      when Each[COMMIT,       ANY,    ANY   ] ; "templateImage=#{Image.get('commit')}"
-      when Each[RELEASE,      ANY,    ANY   ] ; "templateImage=#{Image.get('release')}"
-      when Each[ALERT,        ANY,    ANY   ] ; "templateImage=#{Image.get('alert')}"
-      else                                    ; raise "Unknown type, state, draft combo: #{type}, #{state}, #{draft?}"
-      end
+      "templateImage=#{Image.get(ICONS.fetch(type))}"
     end
 
     def url
-      data.fetch('subject').fetch('url').sub('api.github.com/repos', 'github.com').sub('/pulls/', '/pull/')
+      data.fetch('subject').fetch('url')&.sub('api.github.com/repos', 'github.com')&.sub('/pulls/', '/pull/')
     end
 
     def menu_string
-      "#{repo_name} #{elided_title.gsub('|','⎸')} (#{reason})| #{icon}"
+      "#{repo_name} #{elided_title.gsub('|','｜')} (#{reason})| #{icon}"
     end
   end
 end

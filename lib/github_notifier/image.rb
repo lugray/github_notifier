@@ -14,6 +14,7 @@ module GithubNotifier
     def get(name, color = nil)
       fname = name
       fname += "-#{color}" if color
+      color ||= '000000'
       @memo ||= {}
       @memo[fname] ||= begin
         output = File.join(ROOT, "images/#{fname}.png")
