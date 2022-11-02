@@ -7,7 +7,7 @@ module GithubNotifier
     WHITE          = 'FFFFFF'
     SIZE           = 64
     INPUT_DENSITY  = 1200 # Internal canvas
-    OUTPUT_DENSITY = 325 # Seems to work best with bitbar
+    OUTPUT_DENSITY = 325 # Seems to work best with xbar
 
     class << self
 

@@ -3,7 +3,7 @@ require 'github_notifier'
 module GithubNotifier
   module Commands
     Registry = CLI::Kit::CommandRegistry.new(
-      default: 'bitbar',
+      default: 'xbar',
       contextual_resolver: nil
     )
 
@@ -14,7 +14,7 @@ module GithubNotifier
       Registry.add(->() { const_get(const) }, cmd)
     end
 
-    register :Bitbar
+    register :Xbar
     register :Open
     register :Setup
   end

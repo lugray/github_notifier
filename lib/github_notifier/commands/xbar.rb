@@ -5,7 +5,7 @@ require 'socket'
 
 module GithubNotifier
   module Commands
-    class Bitbar < GithubNotifier::Command
+    class Xbar < GithubNotifier::Command
       def call(args, _name)
         GithubNotifier::SystemNotification.show(notifications)
         puts output

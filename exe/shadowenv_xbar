@@ -1,0 +1,5 @@
+#!/bin/bash
+
+dir="$(ruby -e "puts File.expand_path('../..', File.realpath('$0'))")"
+export PATH="/usr/local/bin:$PATH"
+/nix/var/nix/gcroots/dev-profiles/user-extra-profile/bin/shadowenv exec --dir "$dir" -- "$dir/exe/github_notifier" "$@"

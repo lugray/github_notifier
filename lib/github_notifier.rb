@@ -14,7 +14,7 @@ module GithubNotifier
   TOOL_CACHE_PATH     = File.join(CACHE_HOME, TOOL_NAME)
   NOTIFICATIONS_CACHE = File.join(TOOL_CACHE_PATH, 'notifications')
 
-  EXECUTABLE = File.join(ROOT, 'exe/shadowenv_bitbar')
+  EXECUTABLE = File.join(ROOT, 'exe/shadowenv_xbar')
   OPEN = "'#{EXECUTABLE}' param1=open"
 
   autoload(:API,                  'github_notifier/api')
